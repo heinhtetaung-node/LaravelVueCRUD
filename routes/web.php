@@ -22,3 +22,7 @@ Route::resource('CategoryApi','CategoryController');
 Route::get('/category', function () {
     return view('welcome');
 });
+
+Route::get('/item/item-transition', function () {
+    return view('welcome');
+});

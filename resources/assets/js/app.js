@@ -34,28 +34,34 @@ import App from './App.vue';
 //import CreateItem from './components/CreateItem.vue';
 import Item from './components/Item.vue';
 import Category from './components/Category.vue';
+import ItemTransition from './components/ItemTransition.vue';
 //import EditItem from './components/EditItem.vue';
 const routes = [
-  // {
-  //   name: 'CreateItem',
-  //   path: '/items/create',
-  //   component: CreateItem
-  // },
-  {
+    // {
+    //   name: 'CreateItem',
+    //   path: '/items/create',
+    //   component: CreateItem
+    // },
+    {
         name: 'Item',
         path: '/',
         component: Item
-  },
-  {
+    },
+    {
+        name: 'ItemTransition',
+        path: '/item/item-transition',
+        component: ItemTransition
+    },
+    {
         name: 'Category',
         path: '/category',
         component: Category
-  }
-  // {
-  //     name: 'EditItem',
-  //     path: '/edit/:id',
-  //     component: EditItem
-  //  }
+    }
+    // {
+    //     name: 'EditItem',
+    //     path: '/edit/:id',
+    //     component: EditItem
+    //  }
 ];
 const router = new VueRouter({ mode: 'history', routes: routes});
 new Vue(Vue.util.extend({ router }, App)).$mount('#app');

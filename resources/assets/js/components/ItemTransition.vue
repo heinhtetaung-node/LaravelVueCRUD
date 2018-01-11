@@ -1,10 +1,9 @@
 <template>
     <div>
-        <h1>Items</h1>
+        <h1>Items Transition</h1>
         <div class="row">
           <div class="col-md-10"></div>
           <div class="col-md-2">
-            <router-link :to="{ name: 'ItemTransition' }" class="btn btn-default">Item Transition</router-link>
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#create-item">
                   Create Item
                 </button>
