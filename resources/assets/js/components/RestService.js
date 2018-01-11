@@ -14,6 +14,9 @@ export default{
         {
             let uri = baseurl+action;
             obj.axios.post(uri, para).then((response) => {
+                if(response.result==false){
+                    callback(response, obj);
+                }
                 callback(response.data, obj);
             });
         },
