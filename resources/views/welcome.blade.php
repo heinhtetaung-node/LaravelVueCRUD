@@ -13,10 +13,10 @@
         <!-- Styles -->
         <style>
             html, body {
-                background-color: #fff;
+                /*background-color: #fff;*/
                 color: #000000;
                 font-family: 'Raleway', sans-serif;
-                font-weight: 100;
+/*                font-weight: 100;*/
                 height: 100vh;
                 margin: 0;
             }
@@ -66,6 +66,11 @@
         <link href="{{asset('css/app.css')}}" rel="stylesheet" type="text/css">
     </head>
     <body>
+        <div>
+            <center>
+                <h2>Laravel Vue JS CRUD</h2>
+            </center>
+        </div>
         <div id="app">
 
         </div>
