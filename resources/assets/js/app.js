@@ -35,6 +35,9 @@ import App from './App.vue';
 import Item from './components/Item.vue';
 import Category from './components/Category.vue';
 //import EditItem from './components/EditItem.vue';
+
+import Employee from './components/Employee.vue';
+
 const routes = [
   // {
   //   name: 'CreateItem',
@@ -50,12 +53,17 @@ const routes = [
         name: 'Category',
         path: '/category',
         component: Category
-  }
+  },
   // {
   //     name: 'EditItem',
   //     path: '/edit/:id',
   //     component: EditItem
   //  }
+  {
+        name: 'Employee',
+        path:'/employees',
+        component: Employee
+  }
 ];
 const router = new VueRouter({ mode: 'history', routes: routes});
 new Vue(Vue.util.extend({ router }, App)).$mount('#app');

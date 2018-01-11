@@ -1,34 +1,37 @@
 <template>
     <div>
-        <h1>Items</h1>
+        <h1>Employees List</h1>
         <div class="row">
           <div class="col-md-10"></div>
           <div class="col-md-2">
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#create-item">
-                  Create Item
+                  Add Employee
                 </button>
           </div>
-        </div><br />
-
+        </div><br>
         <input type="text" v-on:change="fetchDatas()" v-model="filter.name" placeholder="name">
-        <input type="text" v-on:change="fetchDatas()" v-model="filter.price" placeholder="price">
+        <input type="text" v-on:change="fetchDatas()" v-model="filter.email" placeholder="email">
 
         <table class="table table-hover">
             <thead>
             <tr>
-                <td>ID</td>
-                <td>Item Name</td>
-                <td>Item Price</td>
+                <td>No</td>
+                <td>Name</td>
+                <td>Email</td>
+                <td>Address</td>
                 <td>Actions</td>
             </tr>
             </thead>
             <tbody>
-                <tr v-for="item in items">
-                    <td>{{ item.id }}</td>
-                    <td>{{ item.name }}</td>
-                    <td>{{ item.price }}</td>
-                    <td><button class="btn btn-primary" v-on:click="editItem(item)">Edit</button></td>
-                    <td><button class="btn btn-danger" v-on:click="deleteItem(item.id)">Delete</button></td>
+                <tr v-for="employee,count in employees">
+                    <td>{{ count+1 }}</td>
+                    <td>{{ employee.name }}</td>
+                    <td>{{ employee.email }}</td>
+                    <td>{{ employee.address}}</td>
+                    <td>
+						<button class="btn btn-primary" v-on:click="editEmployee(employee)">Edit</button>
+                    	<button class="btn btn-danger" v-on:click="deleteEmployee(employee.id)">Delete</button>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -55,32 +58,41 @@
             </ul>
         </nav>
 
+        <!-- create data form -->
         <div class="modal fade" id="create-item" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                <h4 class="modal-title" id="myModalLabel">Item</h4>
+                <h4 class="modal-title" id="myModalLabel">Employee</h4>
               </div>
               <div class="modal-body">
-                <form v-on:submit.prevent="addItem">
+                <form v-on:submit.prevent="addEmployee">
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group">
-                        <label>Item Name:</label>
-                        <input type="hidden" v-model="item.id" />
-                        <input type="text" class="form-control" v-model="item.name">
+                        <label>Name:</label>
+                        <input type="hidden" v-model="employee.id" />
+                        <input type="text" class="form-control" v-model="employee.name">
                       </div>
                     </div>
                     </div>
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label>Item Price:</label>
-                          <input type="text" class="form-control col-md-6" v-model="item.price" />
+                          <label>Email:</label>
+                          <input type="email" class="form-control col-md-6" v-model="employee.email" />
                         </div>
                       </div>
-                    </div><br />
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Address:</label>
+                          <textarea name="address" id="address"  class="form-control" v-model="employee.address"></textarea>                         
+                        </div>
+                      </div>
+                    </div<br />
                     <div class="form-group">
                       <button class="btn btn-primary">Save</button>
                     </div>
@@ -89,20 +101,19 @@
             </div>
           </div>
         </div>
+
     </div>
 </template>
 <script>
 
-    import RestService from './RestService.js';
-    //var RestService = require('./RestService.js');
-    
+    import RestService from './RestService.js'; 
     import CrudMain from './CrudMain.js';
 
     export default {
         extends: CrudMain,
         data(){
             return{
-                filter : {'name':'', 'price':''}
+            	filter : {'name':'', 'email':''}
             }
         },
         created: function()
@@ -113,36 +124,38 @@
             fetchDatas(page = 1){
                 this.pagination.current_page = page;
                 var filterurl = jQuery.param(this.filter);
-                var action = 'items?page='+page+'&'+filterurl;
-                RestService.methods.fetchItems(action, this, function(response, obj) {
-                    obj.items = response.items.data;
+                var action = 'employee?page='+page+'&'+filterurl;
+                RestService.methods.fetchEmployees(action, this, function(response, obj) {
+                    obj.employees = response.employees.data;
                     obj.pagination = response.pagination;
+  
                 });
             },
-            deleteItem(id){
+            addEmployee(){
+                var para = this.employee;
+                // console.log(para); return false;
+                RestService.methods.saveEmployee('employee', para, this, function(response, obj) {
+                    obj.fetchDatas();
+                    obj.employee = {};
+                    $("#create-item").modal('hide');
+                });
+            },
+            editEmployee(obj){
+                this.employee = {
+                    id : obj.id,
+                    name : obj.name,
+                    email : obj.email,
+                    address:obj.address
+                };
+                $("#create-item").modal('show');
+            },
+            deleteEmployee(id){
                 confirm("are you sure you want to delete");
-                var action = `items/${id}`;
-                RestService.methods.deleteItem(action, this, function(response, obj){
+                var action = `employee/${id}`;
+                RestService.methods.deleteEmployee(action, this, function(response, obj){
                     obj.fetchDatas();
                 });                
             },
-            addItem(){
-                var para = this.item;
-                RestService.methods.saveItems('items', para, this, function(response, obj) {
-                    obj.fetchDatas();
-                    obj.item = {};
-                    $("#create-item").modal('hide');
-                    //obj.items = resitems;
-                });
-            },
-            editItem(obj){
-                this.item = {
-                    name : obj.name,
-                    price : obj.price,
-                    id : obj.id
-                };
-                $("#create-item").modal('show');
-            }
         }
     }
 </script>
