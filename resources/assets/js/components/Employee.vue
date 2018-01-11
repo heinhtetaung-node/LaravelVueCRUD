@@ -9,9 +9,12 @@
                 </button>
           </div>
         </div><br>
-        <input type="text" v-on:change="fetchDatas()" v-model="filter.name" placeholder="name">
-        <input type="text" v-on:change="fetchDatas()" v-model="filter.email" placeholder="email">
-
+        <div class="col-md-10">
+            <input type="text" v-on:change="fetchDatas()" v-model="filter.name" placeholder="name">
+            <input type="text" v-on:change="fetchDatas()" v-model="filter.email" placeholder="email">
+        </div><br>
+        
+        <br>
         <table class="table table-hover">
             <thead>
             <tr>
@@ -125,7 +128,7 @@
                 this.pagination.current_page = page;
                 var filterurl = jQuery.param(this.filter);
                 var action = 'employee?page='+page+'&'+filterurl;
-                RestService.methods.fetchEmployees(action, this, function(response, obj) {
+                RestService.methods.fetchItems(action, this, function(response, obj) {
                     obj.employees = response.employees.data;
                     obj.pagination = response.pagination;
   
@@ -134,7 +137,7 @@
             addEmployee(){
                 var para = this.employee;
                 // console.log(para); return false;
-                RestService.methods.saveEmployee('employee', para, this, function(response, obj) {
+                RestService.methods.saveItems('employee', para, this, function(response, obj) {
                     obj.fetchDatas();
                     obj.employee = {};
                     $("#create-item").modal('hide');
@@ -152,7 +155,7 @@
             deleteEmployee(id){
                 confirm("are you sure you want to delete");
                 var action = `employee/${id}`;
-                RestService.methods.deleteEmployee(action, this, function(response, obj){
+                RestService.methods.deleteItem(action, this, function(response, obj){
                     obj.fetchDatas();
                 });                
             },
