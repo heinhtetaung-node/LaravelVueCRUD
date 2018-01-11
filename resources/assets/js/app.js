@@ -34,6 +34,7 @@ import App from './App.vue';
 //import CreateItem from './components/CreateItem.vue';
 import Item from './components/Item.vue';
 import Category from './components/Category.vue';
+import Customer from './components/Customer.vue';
 import ItemTransition from './components/ItemTransition.vue';
 //import EditItem from './components/EditItem.vue';
 const routes = [
@@ -56,7 +57,12 @@ const routes = [
         name: 'Category',
         path: '/category',
         component: Category
-    }
+    },
+    {
+          name: 'Customer',
+          path: '/customer',
+          component: Customer
+    },
     // {
     //     name: 'EditItem',
     //     path: '/edit/:id',
@@ -65,12 +71,3 @@ const routes = [
 ];
 const router = new VueRouter({ mode: 'history', routes: routes});
 new Vue(Vue.util.extend({ router }, App)).$mount('#app');
-
-
-
-
-
-
-
-
-

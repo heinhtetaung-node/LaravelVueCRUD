@@ -3,14 +3,16 @@ export default {
         return{
             items: [],
             item:{},
+            customers: [],
+            customer:{},
             pagination: {
-                total: 0, 
+                total: 0,
                 per_page: 2,
-                from: 1, 
+                from: 1,
                 to: 0,
                 current_page: 1
             },
-            offset: 4,                
+            offset: 4,
             filter : {'name':'', 'price':''}
         }
     },
