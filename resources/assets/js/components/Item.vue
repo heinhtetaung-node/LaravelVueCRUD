@@ -105,7 +105,6 @@
         extends: CrudMain,
         data(){
             return{
-
                 filter : {'name':'', 'price':''},
                 errors : {}
             }

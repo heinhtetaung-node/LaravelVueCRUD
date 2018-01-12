@@ -37,6 +37,13 @@ import Category from './components/Category.vue';
 import ItemTransition from './components/ItemTransition.vue';
 //import EditItem from './components/EditItem.vue';
 
+/*
+*
+*import bootstrap-vue
+*/
+import BootstrapVue from 'bootstrap-vue'
+Vue.use(BootstrapVue);
+
 import Employee from './components/Employee.vue';
 
 const routes = [
