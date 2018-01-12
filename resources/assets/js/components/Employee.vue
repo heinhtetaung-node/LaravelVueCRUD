@@ -4,16 +4,17 @@
         <div class="row">
           <div class="col-md-10"></div>
           <div class="col-md-2">
-            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#create-item">
+            <button type="button" v-on:click="employee={}; errors={}" class="btn btn-success" data-toggle="modal" data-target="#create-item">
                   Add Employee
                 </button>
           </div>
         </div><br>
-        <div class="col-md-10">
-            <input type="text" v-on:change="fetchDatas()" v-model="filter.name" placeholder="name">
-            <input type="text" v-on:change="fetchDatas()" v-model="filter.email" placeholder="email">
-        </div><br>
-        
+
+        <b-nav-form>
+            <b-form-input size="sm" class="mr-sm-2" v-on:change="fetchDatas()" v-model="filter.name" type="text" placeholder="name"/>
+            <b-form-input size="sm" class="mr-sm-2" v-on:change="fetchDatas()" v-model="filter.email" type="text" placeholder="email"/>
+            <b-button size="sm" class="my-2 my-sm-0" v-on:click="fetchDatas()">Search</b-button>
+        </b-nav-form>
         <br>
         <table class="table table-hover">
             <thead>
@@ -77,6 +78,7 @@
                         <label>Name:</label>
                         <input type="hidden" v-model="employee.id" />
                         <input type="text" class="form-control" v-model="employee.name">
+                        <span v-if="errors.name" class="error text-danger">{{ errors.name }}</span>
                       </div>
                     </div>
                     </div>
@@ -84,7 +86,8 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label>Email:</label>
-                          <input type="email" class="form-control col-md-6" v-model="employee.email" />
+                          <input type="email" class="form-control" v-model="employee.email" />
+                          <span v-if="errors.email" class="error text-danger">{{ errors.email }}</span>
                         </div>
                       </div>
                     </div>
@@ -116,7 +119,8 @@
         extends: CrudMain,
         data(){
             return{
-            	filter : {'name':'', 'email':''}
+            	filter : {'name':'', 'email':''},
+                errors:{}
             }
         },
         created: function()
@@ -138,12 +142,18 @@
                 var para = this.employee;
                 // console.log(para); return false;
                 RestService.methods.saveItems('employee', para, this, function(response, obj) {
+                     if(response.result==false){
+                        obj.errors = response.errors;
+                        return false;
+                    } 
                     obj.fetchDatas();
                     obj.employee = {};
+                    obj.errors = {};
                     $("#create-item").modal('hide');
                 });
             },
             editEmployee(obj){
+                this.errors = {};
                 this.employee = {
                     id : obj.id,
                     name : obj.name,
@@ -153,7 +163,7 @@
                 $("#create-item").modal('show');
             },
             deleteEmployee(id){
-                confirm("are you sure you want to delete");
+                confirm("Are you sure you want to delete");
                 var action = `employee/${id}`;
                 RestService.methods.deleteItem(action, this, function(response, obj){
                     obj.fetchDatas();
