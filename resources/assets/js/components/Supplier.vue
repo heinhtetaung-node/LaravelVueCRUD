@@ -1,11 +1,11 @@
 <template>
     <div>
-        <h1>Customer</h1>
+        <h1>supplier</h1>
         <div class="row">
           <div class="col-md-10"></div>
           <div class="col-md-2">
-            <button type="button" v-on:click="customer={};errors={}" class="btn btn-success" data-toggle="modal" data-target="#create-customer">
-                  Create Customer
+            <button type="button" v-on:click="" class="btn btn-success" data-toggle="modal" data-target="#create-supplier">
+                  Create supplier
                 </button>
           </div>change
         </div><br />
@@ -17,7 +17,7 @@
             <thead>
             <tr>
                 <td>ID</td>
-                <td>Customer Name</td>
+                <td>supplier Name</td>
                 <td>Email</td>
                 <td>Address</td>
                 <td>Phone-No</td>
@@ -25,14 +25,14 @@
             </tr>
             </thead>
             <tbody>
-                <tr v-for="customer in customers">
-                    <td>{{ customer.id }}</td>
-                    <td>{{ customer.name }}</td>
-                    <td>{{ customer.email }}</td>
-                    <td>{{ customer.address}}</td>
-                    <td>{{ customer.phone}}</td>
-                    <td><button class="btn btn-primary" v-on:click="editCustomer(customer)">Edit</button></td>
-                    <td><button class="btn btn-danger" v-on:click="deleteCustomer(customer.id)">Delete</button></td>
+                <tr v-for="supplier in suppliers">
+                    <td>{{ supplier.id }}</td>
+                    <td>{{ supplier.name }}</td>
+                    <td>{{ supplier.email }}</td>
+                    <td>{{ supplier.address}}</td>
+                    <td>{{ supplier.phone}}</td>
+                    <td><button class="btn btn-primary" v-on:click="editSupplier(supplier)">Edit</button></td>
+                    <td><button class="btn btn-danger" v-on:click="deleteSupplier(supplier.id)">Delete</button></td>
                 </tr>
             </tbody>
         </table>
@@ -58,20 +58,20 @@
             </ul>
         </nav>
 
-        <div class="modal fade" id="create-customer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal fade" id="create-supplier" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                <h4 class="modal-title" id="myModalLabel">Create Customer</h4>
+                <h4 class="modal-title" id="myModalLabel">Create supplier</h4>
               </div>
               <div class="modal-body">
-                <form v-on:submit.prevent="addCustomer">
+                <form v-on:submit.prevent="addSupplier">
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group">
-                        <label>Customer Name:</label>
-                        <input type="text" class="form-control" v-model="customer.name">
+                        <label>supplier Name:</label>
+                        <input type="text" class="form-control" v-model="supplier.name">
                         <span v-if="errors.name" class="error text-danger">{{ errors.name }}</span> 
                       </div>
                     </div></br>
@@ -79,8 +79,8 @@
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label>Customer's Email:</label>
-                          <input type="text" class="form-control col-md-6" v-model="customer.email" /> 
+                          <label>supplier's Email:</label>
+                          <input type="text" class="form-control col-md-6" v-model="supplier.email" /> 
                         </div>
                         <span v-if="errors.email" class="error text-danger">{{ errors.email }}</span> 
                       </div>
@@ -89,7 +89,7 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label>Address:</label>
-                          <textarea class="form-control col-md-6" v-model="customer.address" ></textarea>
+                          <textarea class="form-control col-md-6" v-model="supplier.address" ></textarea>
                         </div>
                         <span v-if="errors.address" class="error text-danger">{{ errors.address}}</span>
                       </div>
@@ -98,7 +98,7 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label>Phone-No :</label>
-                          <input type="text" class="form-control col-md-6" v-model="customer.phone" />
+                          <input type="text" class="form-control col-md-6" v-model="supplier.phone" />
                         </div>
                          <span v-if="errors.phone" class="error text-danger">{{ errors.phone }}</span> 
                       </div>
@@ -135,44 +135,44 @@
             fetchDatas(page=1){
               this.pagination.current_page = page;
               var filterurl = jQuery.param(this.filter);
-              var action = 'CustomerApi?page='+page+'&'+filterurl;
+              var action = 'supplierApi?page='+page+'&'+filterurl;
               RestService.methods.fetchItems(action, this, function(response, obj) {
-                  obj.customers = response.customers.data;
+                  obj.suppliers = response.suppliers.data;
                   obj.pagination = response.pagination;
                   // console.log(response
               });
             },
-            deleteCustomer(id)
+            deleteSupplier(id)
             {
                 confirm("are you sure you want to delete");
-                var action = `CustomerApi/${id}`;
+                var action = `supplierApi/${id}`;
                 RestService.methods.deleteItem(action, this, function(response, obj){
                     obj.fetchDatas();
                 });     
             },
-            addCustomer(){
-                var para = this.customer;
-                RestService.methods.saveItems('CustomerApi', para, this, function(response, obj) {
+            addSupplier(){
+                var para = this.supplier;
+                RestService.methods.saveItems('supplierApi', para, this, function(response, obj) {
                     if(response.result==false){
                         obj.errors = response.errors;
                         return false;
                     }  
                     obj.fetchDatas();
-                    obj.customer = {};
+                    obj.supplier = {};
                     obj.errors = {};
-                    $("#create-customer").modal('hide');
-                    //obj.customers = rescustomers;
+                    $("#create-supplier").modal('hide');
+                    //obj.suppliers = ressuppliers;
                 });
             },
-            editCustomer(obj){
-                this.customer = {
+            editSupplier(obj){
+                this.supplier = {
                     name : obj.name,
                     email : obj.email,
                     address :obj.address,
                     phone:obj.phone,
                     id : obj.id
                 };
-                $("#create-customer").modal('show');
+                $("#create-supplier").modal('show');
             }
         }
     }

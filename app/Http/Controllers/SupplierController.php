@@ -2,40 +2,40 @@
 
 namespace App\Http\Controllers;
 
-use App\Customer;
-use Validator;
 use Illuminate\Http\Request;
+use App\Supplier;
+use Validator;
 
-class CustomerController extends Controller
+class SupplierController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-     public function index(Request $request)
+    public function index(Request $request)
      {    
 
-         $customers = new Customer();
+         $suppliers = new Supplier();
          if($request->name!=""){
-             $customers = $customers->where('name', 'like', '%'.$request->name.'%');
+             $suppliers = $suppliers->where('name', 'like', '%'.$request->name.'%');
          }
          if($request->email!=""){
-             $customers = $customers->where('email', 'like', '%'.$request->email.'%');
+             $suppliers = $suppliers->where('email', 'like', '%'.$request->email.'%');
          }
-         $customers = $customers->latest()->paginate(5);
+         $suppliers = $suppliers->latest()->paginate(5);
 
 
          $response = [
              'pagination' => [
-                'total' => $customers->total(),
-                'per_page' => $customers->perPage(),
-                'current_page' => $customers->currentPage(),
-                'last_page' => $customers->lastPage(),
-                'from' => $customers->firstItem(),
-                'to' => $customers->lastItem()
+                'total' => $suppliers->total(),
+                'per_page' => $suppliers->perPage(),
+                'current_page' => $suppliers->currentPage(),
+                'last_page' => $suppliers->lastPage(),
+                'from' => $suppliers->firstItem(),
+                'to' => $suppliers->lastItem()
             ],
-             'customers' => $customers
+             'suppliers' => $suppliers
          ];
 
          return response()->json($response);
@@ -72,20 +72,20 @@ class CustomerController extends Controller
           }
         
          if(!isset($request->id)){
-             $customer = new Customer([
+             $supplier = new Supplier([
                'name' => $request->get('name'),
                'email' => $request->get('email'),
                'address' => $request->get('address'),
                'phone' => $request->get('phone')
              ]);
          }else{
-             $customer = Customer::find($request->id);
-             $customer->name = $request->get('name');
-             $customer->email = $request->get('email');
-             $customer->address = $request->get('address');
-             $customer->phone = $request->get('phone');
+             $supplier = supplier::find($request->id);
+             $supplier->name = $request->get('name');
+             $supplier->email = $request->get('email');
+             $supplier->address = $request->get('address');
+             $supplier->phone = $request->get('phone');
          }
-         $customer->save();
+         $supplier->save();
          return response()->json('Successfully saved');
      }
      /**
@@ -106,8 +106,8 @@ class CustomerController extends Controller
       */
      public function edit($id)
      {
-         $customer = Customer::find($id);
-         return response()->json($customer);
+         $supplier = Supplier::find($id);
+         return response()->json($supplier);
      }
      /**
       * Update the specified resource in storage.
@@ -118,10 +118,10 @@ class CustomerController extends Controller
       */
      public function update(Request $request, $id)
      {
-         $customer = Customer::find($id);
-         $customer->name = $request->get('name');
-         $customer->price = $request->get('price');
-         $customer->save();
+         $supplier = Supplier::find($id);
+         $supplier->name = $request->get('name');
+         $supplier->price = $request->get('price');
+         $supplier->save();
          return response()->json('Successfully Updated');
      }
      /**
@@ -132,9 +132,8 @@ class CustomerController extends Controller
       */
      public function destroy($id)
      {
-       $customer = Customer::find($id);
-       $customer->delete();
+       $supplier = Supplier::find($id);
+       $supplier->delete();
        return response()->json('Successfully Deleted');
      }
-
 }

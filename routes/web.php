@@ -19,12 +19,17 @@ Route::get('/', function () {
 Route::resource('items','ItemController');
 Route::resource('CategoryApi','CategoryController');
 Route::resource('CustomerApi','CustomerController');
+Route::resource('supplierApi','SupplierController');
 
 Route::get('/category', function () {
     return view('welcome');
 });
 
 Route::get('/customer', function () {
+    return view('welcome');
+});
+
+Route::get('/supplier', function () {
     return view('welcome');
 });
 
