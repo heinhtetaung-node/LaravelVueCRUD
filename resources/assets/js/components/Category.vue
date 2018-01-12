@@ -4,8 +4,8 @@
         <div class="row">
           <div class="col-md-10"></div>
           <div class="col-md-2">
-            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#create-item">
-                  Create Category
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#create-category">
+                Create Category
                 </button>
           </div>
         </div><br />
@@ -13,49 +13,72 @@
             <thead>
             <tr>
                 <td>ID</td>
-                <td>Item Name</td>
-                <td>Item Price</td>
+                <td>Name</td>
+                <td>Description</td>
                 <td>Actions</td>
             </tr>
             </thead>
             <tbody>
-                <tr v-for="item in items">
-                    <td>{{ item.id }}</td>
-                    <td>{{ item.name }}</td>
-                    <td>{{ item.price }}</td>
-                    <td><router-link :to="{name: 'EditItem', params: { id: item.id }}" class="btn btn-primary">Edit</router-link></td>
-                    <td><button class="btn btn-danger" v-on:click="deleteItem(item.id)">Delete</button></td>
+                <tr v-for="category in categories">
+                    <td>{{ category.id }}</td>
+                    <td>{{ category.name }}</td>
+                    <td>{{ category.description }}</td>
+                    <td><button class="btn btn-primary" v-on:click="editCategory(category)">Edit</button></td>
+                    <td><button class="btn btn-danger" v-on:click="deleteCategory(category.id)">Delete</button></td>
                 </tr>
             </tbody>
         </table>
-
-        <div class="modal fade" id="create-item" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <!-- for pagination -->
+        <nav>
+            <ul class="pagination">
+                <li v-if="pagination.current_page > 1">
+                    <a href="#" aria-label="Previous"
+                       v-on:click="fetchCategories(pagination.current_page - 1)">
+                        <span aria-hidden="true">«</span>
+                    </a>
+                </li>
+                <li v-for="page in pagesNumber"
+                    v-bind:class="[ page == isActived ? 'active' : '']">
+                    <a href="#"
+                       v-on:click="fetchCategories(page)">{{ page }}</a>
+                </li>
+                <li v-if="pagination.current_page < pagination.last_page">
+                    <a href="#" aria-label="Next"
+                       v-on:click="fetchCategories(pagination.current_page + 1)">
+                        <span aria-hidden="true">»</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- for create_category form -->
+        <div class="modal fade" id="create-category" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                <h4 class="modal-title" id="myModalLabel">Create Item</h4>
+                <h4 class="modal-title" id="myModalLabel">Create Category</h4>
               </div>
               <div class="modal-body">
-                <form v-on:submit.prevent="addItem">
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label>Item Name:</label>
-                        <input type="text" class="form-control" v-model="item.name">
-                      </div>
-                    </div>
+                <form v-on:submit.prevent="addCategory">
+                    <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label>Category Name:</label>
+                            <input type="text" class="form-control" v-model="category.name">
+                          </div>
+                        </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label>Item Price:</label>
-                          <input type="text" class="form-control col-md-6" v-model="item.price" />
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label>Description</label>
+                            <input type="text" class="form-control" v-model="category.description">
+                          </div>
                         </div>
-                      </div>
-                    </div><br />
+                    </div>
+                    <br />
                     <div class="form-group">
-                      <button class="btn btn-primary">Add Item</button>
+                      <button class="btn btn-primary">Add Category</button>
                     </div>
                 </form>
               </div>
@@ -67,45 +90,53 @@
 <script>
 
     import RestService from './RestService.js';
+    import CrudMain from './CrudMain.js';
     //var RestService = require('./RestService.js');
     
     export default {
+         extends:CrudMain,
         data(){
             return{
-                items: [],
-                item:{}
-            }
+               
+            } 
         },
         created: function()
         {
-            this.fetchDatas();
+              this.fetchCategories();
         },
         methods: {
-            fetchDatas(){
-                var resitems = [];
-                RestService.methods.fetchItems('items', this, function(response, obj) {
-                    resitems = response;
-                    obj.items = resitems;
-                });
+            fetchCategories(page = 1){
+                this.pagination.current_page = page;
+                var action = 'categories?page='+page;
+                RestService.methods.fetchCategories(action, this, function(response, obj) {        
+                 obj.categories = response.categories.data; 
+                 obj.pagination = response.pagination;                   
+                });                
             },
-            deleteItem(id)
-            {
-                RestService.methods.commonfunction(id);
-                return false;
-                let uri = `http://localhost:8000/items/${id}`;
-                this.items.splice(id, 1);
-                this.axios.delete(uri);
+            addCategory(){
+                    var para = this.category;
+                    RestService.methods.saveItems('categories', para, this, function(response, obj) {
+                        obj.fetchCategories();
+                        obj.category = {};
+                        $("#create-category").modal('hide');
+                        //obj.items = resitems;
+                    });
             },
-            addItem(){
-                let uri = 'http://localhost:8000/items';
-                var para = this.item;
-                RestService.methods.saveItems('items', para, this, function(response, obj) {
-                    obj.fetchDatas();
-                    obj.item = {};
-                    $("#create-item").modal('hide');
-                    //obj.items = resitems;
-                });
-            }
-        }
+            editCategory(obj){
+                this.category = {
+                    name : obj.name,
+                    description : obj.description,
+                     id : obj.id
+                };
+                $("#create-category").modal('show');
+            },
+            deleteCategory(id){
+                confirm("Are you sure you want to delete?");
+                var action = `categories/${id}`;
+                RestService.methods.deleteCategory(action, this, function(response, obj){
+                    obj.fetchCategories();
+                });                
+            },
+        }        
     }
 </script>

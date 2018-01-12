@@ -1,89 +1,50 @@
 <?php
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
-use App\Item;
+use App\Category;
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        $items = Item::all();
-        return response()->json($items);
+         $categories = new Category();
+        $categories = $categories->first()->paginate(5);
+        $response = [
+            'pagination' => [
+                'total' => $categories->total(),
+                'per_page' => $categories->perPage(),
+                'current_page' => $categories->currentPage(),
+                'last_page' => $categories->lastPage(),
+                'from' => $categories->firstItem(),
+                'to' => $categories->lastItem()
+            ],
+            'categories' => $categories
+        ];
+
+        return response()->json($response);
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
-    {
-        $item = new Item([
-          'name' => $request->get('name'),
-          'price' => $request->get('price')
+    {   
+        if(!isset($request->id)){
+        $category = new Category([
+              'name' => $request->get('name'),
+              'description' =>  $request->get('description')
         ]);
-        $item->save();
-        return response()->json('Successfully added');
+        }else{
+            $category = Category::find($request->id);
+            $category->name = $request->get('name');
+            $category->description = $request->get('description');          
+        }      
+        $category->save();
+        return response()->json('Successfully saved');
     }
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $item = Item::find($id);
-        return response()->json($item);
-    }
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $item = Item::find($id);
-        $item->name = $request->get('name');
-        $item->price = $request->get('price');
-        $item->save();
-        return response()->json('Successfully Updated');
-    }
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
-      $item = Item::find($id);
-      $item->delete();
+      $category = Category::find($id);
+      $category->delete();
       return response()->json('Successfully Deleted');
     }
+    
 }

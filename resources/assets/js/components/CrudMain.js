@@ -3,6 +3,8 @@ export default {
         return{
             items: [],
             item:{},
+            categories: [],
+            category:{},
             pagination: {
                 total: 0, 
                 per_page: 2,
@@ -10,13 +12,13 @@ export default {
                 to: 0,
                 current_page: 1
             },
-            offset: 4,                
-            filter : {'name':'', 'price':''}
+            offset: 4
         }
     },
     created: function()
     {
         this.fetchDatas();
+        // this.fetchCategories();
     },
     computed: {
         isActived: function () {

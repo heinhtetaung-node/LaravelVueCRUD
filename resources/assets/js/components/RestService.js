@@ -4,14 +4,15 @@ var baseurl = config.baseurl;
 export default{
 	methods: {
 		fetchItems(action, obj, callback)
-        {
+        {   
+            
             let uri = baseurl+action;
             obj.axios.get(uri).then((response) => {
                 callback(response.data, obj);
             });
         },
         saveItems(action, para, obj, callback)
-        {
+        {   
             let uri = baseurl+action;
             obj.axios.post(uri, para).then((response) => {
                 callback(response.data, obj);
@@ -27,6 +28,28 @@ export default{
         commonfunction(id)
         {
         	alert(id);
-        }
+        },
+        fetchCategories(action,obj,callback)
+        {
+            let uri = baseurl+action;
+             //alert(uri);
+            obj.axios.get(uri).then((response) => {
+                callback(response.data, obj);
+            });
+        },
+        saveCategories(action, para, obj, callback)
+        {   
+            let uri = baseurl+action;
+            obj.axios.post(uri, para).then((response) => {
+                callback(response.data, obj);
+            });
+        },        
+        deleteCategory(action, obj, callback)
+        {
+            let uri = baseurl+action;
+            obj.axios.delete(uri).then((response) => {
+                callback(response.data, obj);
+            });
+        },
     }
 }

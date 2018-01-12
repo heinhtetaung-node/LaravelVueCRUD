@@ -55,12 +55,14 @@ class ItemController extends Controller
         if(!isset($request->id)){
             $item = new Item([
               'name' => $request->get('name'),
-              'price' => $request->get('price')
+              'price' => $request->get('price'),
+              'qty'=>$request->get('qty')
             ]);
         }else{
             $item = Item::find($request->id);
             $item->name = $request->get('name');
-            $item->price = $request->get('price');            
+            $item->price = $request->get('price');
+            $item->qty =$request->get('qty');            
         }
         $item->save();
         return response()->json('Successfully saved');

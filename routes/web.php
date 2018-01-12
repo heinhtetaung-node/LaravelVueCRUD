@@ -17,12 +17,14 @@ Route::get('/', function () {
 
 
 Route::resource('items','ItemController');
-Route::resource('CategoryApi','CategoryController');
+Route::resource('categories','CategoryController');
 
 Route::get('/category', function () {
     return view('welcome');
 });
-
+Route::get('/sub_category',function(){
+	return view('welcome');
+});
 Route::get('/item/item-transition', function () {
     return view('welcome');
 });

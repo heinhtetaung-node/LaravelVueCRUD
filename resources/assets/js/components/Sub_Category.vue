@@ -4,10 +4,9 @@
         <div class="row">
           <div class="col-md-10"></div>
           <div class="col-md-2">
-            <router-link :to="{ name: 'ItemTransition' }" class="btn btn-default">Item Transition</router-link>
             <br>
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#create-item">
-                  Create Item
+                  Create Category
                 </button>
           </div>
         </div><br />
@@ -19,20 +18,22 @@
             <thead>
             <tr>
                 <td>ID</td>
-                <td>Item Name</td>
-                <td>Item Price</td>
-                <td>Quantity</td>
+                <td>Category Name</td>
+                <td>Description</td>
+                <td>Parent Id</td>
+                <td>Sub Parent Id</td>
                 <td>Action</td>
             </tr>
             </thead>
             <tbody>
-                <tr v-for="item in items">
-                    <td>{{ item.id }}</td>
-                    <td>{{ item.name }}</td>
-                    <td>{{ item.price }}</td>
-                    <td>{{ item.qty }}</td>
-                    <td><button class="btn btn-primary" v-on:click="editItem(item)">Edit</button></td>
-                    <td><button class="btn btn-danger" v-on:click="deleteItem(item.id)">Delete</button></td>
+                <tr v-for="sub_category in sub_categories">
+                    <td>{{ sub_category.id }}</td>
+                    <td>{{ sub_category.name }}</td>
+                    <td>{{ sub_category.description }}</td>
+                    <td>{{ sub_category.parent_id }}</td>
+                    <td>{{ sub_category.sub_parent_id }}</td>
+                    <td><button class="btn btn-primary" v-on:click="editItem(sub_category)">Edit</button></td>
+                    <td><button class="btn btn-danger" v-on:click="deleteItem(sub_category.id)">Delete</button></td>
                 </tr>
             </tbody>
         </table>
@@ -71,36 +72,36 @@
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group">
-                        <label>Item Name:</label>
+                        <label>Name:</label>
                         <input type="hidden" v-model="item.id" />
-                        <input type="text" class="form-control" v-model="item.name">
+                        <input type="text" class="form-control" v-model="sub_category.name">
                       </div>
                     </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-6">
+                      <div class="col-md-6">f
                         <div class="form-group">
-                          <label>Item Qty:</label>
-                          <input type="number" class="form-control col-md-6 qty" v-model="item.qty" />
+                          <label>Parent:</label>
+                          <input type="number" class="form-control col-md-6 qty" v-model="sub_category.parent_id" />
                         </div>
                       </div>
                     </div>
-                    <div class="row">
+                    <!-- <div class="row">
                       <div class="col-md-6">
                         <div class="form-group">
                           <label>Item Price:</label>
                           <input type="text" class="form-control col-md-6" v-model="item.price" />
                         </div>
                       </div>
-                    </div>
-                    <div class="row">
+                    </div> -->
+                    <!-- <div class="row">
                       <div class="col-md-6">
                         <div class="form-group">
                           <label>Total:</label>
                           <input type="text" disabled class="form-control col-md-6" v-model="settotal" />
                         </div>
                       </div>
-                    </div>
+                    </div> -->
                     <br />
                     <div class="form-group">
                       <button class="btn btn-primary">Save</button>
