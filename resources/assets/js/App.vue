@@ -15,7 +15,16 @@
             <b-navbar-brand>
                 <router-link :to="{ name: 'ItemTransition' }">Item Transition</router-link>
             </b-navbar-brand>
-             
+
+            <b-navbar-brand>
+                <router-link :to="{ name: 'ItemTransition' }">Login</router-link>
+            </b-navbar-brand>
+            <b-navbar-brand>
+                <router-link :to="{ name: 'Register' }">Sign Up</router-link>
+            </b-navbar-brand>
+            <b-navbar-brand>
+                <router-link :to="{ name: 'ItemTransition' }">Logout</router-link>
+            </b-navbar-brand>             
         </b-navbar>
         <!-- navbar.vue --> 
         <div>

@@ -45,6 +45,8 @@ Vue.use(BootstrapVue);
 
 import Employee from './components/Employee.vue';
 
+import Register from './components/Register.vue';
+
 const routes = [
     // {
     //   name: 'CreateItem',
@@ -76,12 +78,17 @@ const routes = [
         name: 'Employee',
         path:'/employees',
         component: Employee
-    }
+    },
     // {
     //     name: 'EditItem',
     //     path: '/edit/:id',
     //     component: EditItem
     //  }
+    {       
+        name: 'Register',
+        path: '/register',
+        component: Register
+    },
 
 ];
 const router = new VueRouter({ mode: 'history', routes: routes});
