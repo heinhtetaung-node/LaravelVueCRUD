@@ -3,6 +3,8 @@ export default {
         return{
             items: [],
             item:{},
+            categorys: [],
+            category:{},
             pagination: {
                 total: 0, 
                 per_page: 2,
@@ -11,7 +13,6 @@ export default {
                 current_page: 1
             },
             offset: 4,                
-            filter : {'name':'', 'price':''}
         }
     },
     created: function()

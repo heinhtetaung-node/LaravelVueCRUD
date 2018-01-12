@@ -18,8 +18,13 @@ Route::get('/', function () {
 
 Route::resource('items','ItemController');
 Route::resource('CategoryApi','CategoryController');
+Route::resource('InvCategoryApi','Invoices\InvCategoryController');
 
 Route::get('/category', function () {
+    return view('welcome');
+});
+
+Route::get('/invcategory', function () {
     return view('welcome');
 });
 

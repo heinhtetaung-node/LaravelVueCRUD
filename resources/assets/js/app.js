@@ -33,7 +33,7 @@ Vue.use(VueAxios, axios);
 import App from './App.vue';
 //import CreateItem from './components/CreateItem.vue';
 import Item from './components/Item.vue';
-import Category from './components/Category.vue';
+import InvCategory from './components/invoices/InvCategory.vue';
 import ItemTransition from './components/ItemTransition.vue';
 //import EditItem from './components/EditItem.vue';
 const routes = [
@@ -52,10 +52,10 @@ const routes = [
         path: '/item/item-transition',
         component: ItemTransition
     },
-    {
-        name: 'Category',
-        path: '/category',
-        component: Category
+     {
+        name: 'InvCategory',
+        path: '/invcategory',
+        component: InvCategory
     }
     // {
     //     name: 'EditItem',
