@@ -139,11 +139,11 @@
             },
             deleteCustomer(id)
             {
-                RestService.methods.commonfunction(id);
-                return false;
-                let uri = `http://127.0.0.1:8000/CustomerApi/${id}`;
-                this.customers.splice(id, 1);
-                this.axios.delete(uri);
+                confirm("are you sure you want to delete");
+                var action = `CustomerApi/${id}`;
+                RestService.methods.deleteItem(action, this, function(response, obj){
+                    obj.fetchDatas();
+                });     
             },
             addCustomer(){
                 var para = this.customer;
@@ -163,7 +163,7 @@
                     phone:obj.phone,
                     id : obj.id
                 };
-                $("#create-item").modal('show');
+                $("#create-customer").modal('show');
             }
         }
     }
