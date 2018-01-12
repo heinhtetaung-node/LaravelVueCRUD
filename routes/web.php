@@ -24,10 +24,18 @@ Route::get('/category', function () {
 });
 
 
- /**
-     * Route for employee
-     */
+
+/*
+ *
+ * Route for employee
+ */
 Route::get('/employees', function () {
     return view('welcome');
 });
+
 Route::resource('employee','EmployeeController');
+
+
+Route::get('/item/item-transition', function () {
+    return view('welcome');
+});

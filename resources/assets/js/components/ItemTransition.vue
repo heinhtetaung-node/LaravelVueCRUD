@@ -1,10 +1,9 @@
 <template>
     <div>
-        <h1>Items</h1>
+        <h1>Items Transition</h1>
         <div class="row">
           <div class="col-md-10"></div>
           <div class="col-md-2">
-            <router-link :to="{ name: 'ItemTransition' }" class="btn btn-default">Item Transition</router-link>
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#create-item">
                   Create Item
                 </button>
@@ -60,7 +59,7 @@
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <button type="button" v-on:click="item={}; errors={}" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                 <h4 class="modal-title" id="myModalLabel">Item</h4>
               </div>
               <div class="modal-body">
@@ -71,16 +70,14 @@
                         <label>Item Name:</label>
                         <input type="hidden" v-model="item.id" />
                         <input type="text" class="form-control" v-model="item.name">
-                        <span v-if="errors.name" class="error text-danger">{{ errors.name }}</span>
                       </div>
                     </div>
-                  </div>
+                    </div>
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group">
                           <label>Item Price:</label>
-                          <input type="text" class="form-control" v-model="item.price" /> 
-                          <span v-if="errors.price" class="error text-danger">{{ errors.price }}</span>                         
+                          <input type="text" class="form-control col-md-6" v-model="item.price" />
                         </div>
                       </div>
                     </div><br />
@@ -105,9 +102,7 @@
         extends: CrudMain,
         data(){
             return{
-
-                filter : {'name':'', 'price':''}
-                errors : {}
+                
             }
         },
         created: function()
@@ -134,14 +129,10 @@
             addItem(){
                 var para = this.item;
                 RestService.methods.saveItems('items', para, this, function(response, obj) {
-                    if(response.result==false){
-                        obj.errors = response.errors;
-                        return false;
-                    }                    
                     obj.fetchDatas();
                     obj.item = {};
-                    obj.errors = {};
-                    $("#create-item").modal('hide');                    
+                    $("#create-item").modal('hide');
+                    //obj.items = resitems;
                 });
             },
             editItem(obj){

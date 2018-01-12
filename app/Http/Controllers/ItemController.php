@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Item;
+use Validator;
 class ItemController extends Controller
 {
     /**
@@ -52,6 +53,17 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
+        $rules = array(
+                'name' => 'required',
+                'price'=>'required'       
+            );
+        $validator = Validator::make($request->all(), $rules);
+        
+        if ($validator->fails()) 
+        {
+            return response()->json(array('errors' => $validator->messages(), 'result' => false, 'message' => 'validation error'));
+        }
+        
         if(!isset($request->id)){
             $item = new Item([
               'name' => $request->get('name'),
@@ -63,7 +75,7 @@ class ItemController extends Controller
             $item->price = $request->get('price');            
         }
         $item->save();
-        return response()->json('Successfully saved');
+        return response()->json(['result' => true, 'message' => 'Successfully saved']);
     }
     /**
      * Display the specified resource.
