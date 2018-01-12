@@ -60,7 +60,7 @@
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <button type="button" v-on:click="item={}; errors={}" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                 <h4 class="modal-title" id="myModalLabel">Item</h4>
               </div>
               <div class="modal-body">
@@ -71,14 +71,16 @@
                         <label>Item Name:</label>
                         <input type="hidden" v-model="item.id" />
                         <input type="text" class="form-control" v-model="item.name">
+                        <span v-if="errors.name" class="error text-danger">{{ errors.name }}</span>
                       </div>
                     </div>
-                    </div>
+                  </div>
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group">
                           <label>Item Price:</label>
-                          <input type="text" class="form-control col-md-6" v-model="item.price" />
+                          <input type="text" class="form-control" v-model="item.price" /> 
+                          <span v-if="errors.price" class="error text-danger">{{ errors.price }}</span>                         
                         </div>
                       </div>
                     </div><br />
@@ -103,7 +105,7 @@
         extends: CrudMain,
         data(){
             return{
-                
+                errors : {}
             }
         },
         created: function()
@@ -130,10 +132,14 @@
             addItem(){
                 var para = this.item;
                 RestService.methods.saveItems('items', para, this, function(response, obj) {
+                    if(response.result==false){
+                        obj.errors = response.errors;
+                        return false;
+                    }                    
                     obj.fetchDatas();
                     obj.item = {};
-                    $("#create-item").modal('hide');
-                    //obj.items = resitems;
+                    obj.errors = {};
+                    $("#create-item").modal('hide');                    
                 });
             },
             editItem(obj){
