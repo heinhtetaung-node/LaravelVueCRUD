@@ -27,9 +27,5 @@ export default{
                 callback(response.data, obj);
             });
         },
-        commonfunction(id)
-        {
-        	alert(id);
-        }
     }
 }

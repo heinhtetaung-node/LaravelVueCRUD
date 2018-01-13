@@ -92,12 +92,12 @@
             {
                 RestService.methods.commonfunction(id);
                 return false;
-                let uri = `http://localhost:8000/items/${id}`;
+                let uri = `http://127.0.0.1:8000/items/${id}`;
                 this.items.splice(id, 1);
                 this.axios.delete(uri);
             },
             addItem(){
-                let uri = 'http://localhost:8000/items';
+                let uri = 'http://127.0.0.1:8000/items';
                 var para = this.item;
                 RestService.methods.saveItems('items', para, this, function(response, obj) {
                     obj.fetchDatas();

@@ -23,6 +23,19 @@ Route::get('/category', function () {
     return view('welcome');
 });
 
+
+
+/*
+ *
+ * Route for employee
+ */
+Route::get('/employees', function () {
+    return view('welcome');
+});
+
+Route::resource('employee','EmployeeController');
+
+
 Route::get('/item/item-transition', function () {
     return view('welcome');
 });

@@ -5,7 +5,7 @@
           <div class="col-md-10"></div>
           <div class="col-md-2">
             <router-link :to="{ name: 'ItemTransition' }" class="btn btn-default">Item Transition</router-link>
-            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#create-item">
+            <button type="button" v-on:click="item={}; errors={}" class="btn btn-success" data-toggle="modal" data-target="#create-item">
                   Create Item
                 </button>
           </div>
@@ -60,7 +60,7 @@
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <button type="button" v-on:click="item={}; errors={}" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <button type="button"  class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                 <h4 class="modal-title" id="myModalLabel">Item</h4>
               </div>
               <div class="modal-body">
@@ -105,6 +105,7 @@
         extends: CrudMain,
         data(){
             return{
+                filter : {'name':'', 'price':''},
                 errors : {}
             }
         },
@@ -143,6 +144,7 @@
                 });
             },
             editItem(obj){
+                this.errors = {};
                 this.item = {
                     name : obj.name,
                     price : obj.price,

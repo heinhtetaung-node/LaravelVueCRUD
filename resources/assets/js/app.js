@@ -36,6 +36,17 @@ import Item from './components/Item.vue';
 import Category from './components/Category.vue';
 import ItemTransition from './components/ItemTransition.vue';
 //import EditItem from './components/EditItem.vue';
+
+/*
+*import bootstrap-vue
+*/
+import BootstrapVue from 'bootstrap-vue';
+Vue.use(BootstrapVue);
+
+import Employee from './components/Employee.vue';
+
+import Register from './components/Register.vue';
+
 const routes = [
     // {
     //   name: 'CreateItem',
@@ -56,12 +67,29 @@ const routes = [
         name: 'Category',
         path: '/category',
         component: Category
-    }
+
+    },
+  // {
+  //     name: 'EditItem',
+  //     path: '/edit/:id',
+  //     component: EditItem
+  //  }
+    {
+        name: 'Employee',
+        path:'/employees',
+        component: Employee
+    },
     // {
     //     name: 'EditItem',
     //     path: '/edit/:id',
     //     component: EditItem
     //  }
+    {       
+        name: 'Register',
+        path: '/register',
+        component: Register
+    },
+
 ];
 const router = new VueRouter({ mode: 'history', routes: routes});
 new Vue(Vue.util.extend({ router }, App)).$mount('#app');
